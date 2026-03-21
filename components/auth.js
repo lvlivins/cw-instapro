@@ -1,35 +1,24 @@
-import { loginUser, registerUser } from "../api.js";
-import { renderHeaderComponent } from "./header.js";
-import { renderUploadImageComponent } from "./upload-image.js";
+import {loginUser, registerUser} from "../api.js";
+import {renderHeaderComponent} from "./header.js";
+import {renderUploadImageComponent} from "./upload-image.js";
 
-/**
- * Компонент страницы авторизации.
- * Этот компонент предоставляет пользователю интерфейс для входа в систему или регистрации.
- * Форма переключается между режимами "Вход" и "Регистрация".
- *
+/** Компонент страницы авторизации = вход и рег
  * @param {HTMLElement} params.appEl - Корневой элемент приложения, в который будет рендериться страница.
  * @param {Function} params.setUser - Функция, вызываемая при успешной авторизации или регистрации.
- *                                    Принимает объект пользователя в качестве аргумента.
- */
-export function renderAuthPageComponent({ appEl, setUser }) {
-  /**
-   * Флаг, указывающий текущий режим формы.
+ *                                    Принимает объект пользователя в качестве аргумента.*/
+export function renderAuthPageComponent({appEl, setUser}) {
+  /**Флаг, указывающий текущий режим формы.
    * Если `true`, форма находится в режиме входа. Если `false`, в режиме регистрации.
-   * @type {boolean}
-   */
+   * @type {boolean}*/
   let isLoginMode = true;
 
-  /**
-   * URL изображения, загруженного пользователем при регистрации.
-   * Используется только в режиме регистрации.
-   * @type {string}
-   */
+  /* URL изображения, загруженного пользователем при регистрации.
+  Используется только в режиме регистрации.
+  @type {string}*/
   let imageUrl = "";
 
-  /**
-   * Рендерит форму авторизации или регистрации.
-   * В зависимости от значения `isLoginMode` отображает соответствующий интерфейс.
-   */
+  /*Рендерит форму авторизации или регистрации.
+   В зависимости от значения `isLoginMode` отображает соответствующий интерфейс.*/
   const renderForm = () => {
     const appHtml = `
       <div class="page-container">
@@ -74,10 +63,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
 
     appEl.innerHTML = appHtml;
 
-    /**
-     * Устанавливает сообщение об ошибке в форме.
-     * @param {string} message - Текст сообщения об ошибке.
-     */
+    /* Устанавливает сообщение об ошибке в форме.
+    @param {string} message - Текст сообщения об ошибке.*/
     const setError = (message) => {
       appEl.querySelector(".form-error").textContent = message;
     };
@@ -117,7 +104,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           return;
         }
 
-        loginUser({ login, password })
+        loginUser({login, password})
           .then((user) => {
             setUser(user.user);
           })
@@ -151,7 +138,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           return;
         }
 
-        registerUser({ login, password, name, imageUrl })
+        registerUser({login, password, name, imageUrl})
           .then((user) => {
             setUser(user.user);
           })

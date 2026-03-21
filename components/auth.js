@@ -1,6 +1,6 @@
 import { loginUser, registerUser } from "../api.js";
-import { renderHeaderComponent } from "./header-component.js";
-import { renderUploadImageComponent } from "./upload-image-component.js";
+import { renderHeaderComponent } from "./header.js";
+import { renderUploadImageComponent } from "./upload-image.js";
 
 /**
  * Компонент страницы авторизации.

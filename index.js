@@ -1,6 +1,6 @@
 import { getPosts } from "./api.js";
-import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
-import { renderAuthPageComponent } from "./components/auth-page-component.js";
+import { renderAddPostPageComponent } from "./components/add-post.js";
+import { renderAuthPageComponent } from "./components/auth.js";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -8,8 +8,8 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
-import { renderPostsPageComponent } from "./components/posts-page-component.js";
-import { renderLoadingPageComponent } from "./components/loading-page-component.js";
+import { renderPostsPageComponent } from "./components/posts.js";
+import { renderLoadingPageComponent } from "./components/loading.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
@@ -31,9 +31,7 @@ export const logout = () => {
   goToPage(POSTS_PAGE);
 };
 
-/**
- * Включает страницу приложения
- */
+/* Включает страницу приложения */
 export const goToPage = (newPage, data) => {
   if (
     [
@@ -124,7 +122,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // @TODO: реализовать страницу с фотографиями отдельного пользвателя
+    // @TODO: реализовать страницу с фотографиями отдельного пользователя
     appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return;
   }

@@ -44,14 +44,18 @@ p {
 
 .button,
 .secondary-button {
-  display: block;
-  padding: 10px 13px 13px;
-  font-size: 18px;
-  line-height: 22px;
-  border-radius: 5px;
-  background-color: #565eef;
+  display: inline-block;
+  width: auto;
+  align-self: center;
+  padding: 12px 20px;
+  border: 2px solid transparent;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
   color: #ffffff;
-  border: none;
+  background-color: #222222;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .link-button {
@@ -79,12 +83,15 @@ p {
 }
 
 .secondary-button {
-  background-color: #edecff;
-  color: #565eef;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  background-color: #222222;
+  cursor: pointer;
 }
 
 .secondary-button:hover {
-  background-color: #f2eeff;
+  background-color: #6d73ff;
 }
 
 .secondary-button:active {

@@ -1,5 +1,25 @@
+body {
+  margin: 0;
+}
+
+.page-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px;
+  box-sizing: border-box;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+}
+
+.page-reg {
+  background: linear-gradient(90deg, orange, #33ccff, #33cc33);
+  margin: 0 auto;
+  padding: 50px;
+}
+
 .page-container {
   padding: 0 20px;
+  border-radius: 20px;
 }
 
 .page-header {
@@ -7,9 +27,9 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
-  padding: 20px 16px;
-  margin-left: -20px;
-  margin-right: -20px;
+  padding: 20px 150px;
+  margin: 10px auto;
+  background-color: transparent;
 }
 
 .logo {
@@ -24,13 +44,27 @@
 }
 
 .header-button {
-  padding: 0;
-  border: none;
-  background-color: transparent;
+  padding: 12px 20px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: linear-gradient(#ffffff, #ffffff) padding-box,
+  linear-gradient(90deg, orange, #33ccff, #33cc33) border-box;
   font-size: 14px;
   line-height: 18px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.header-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.header-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 .logout-button {
@@ -39,11 +73,13 @@
 }
 
 .posts {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   padding: 0;
   margin: 0;
+  list-style: none;
+  align-items: stretch;
 }
 
 .post-header {
@@ -63,19 +99,35 @@
 }
 
 .post-image-container {
-  margin-left: -20px;
-  margin-right: -20px;
-  height: 500px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
+  align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
+  overflow: hidden;
+}
+
+.post {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
 .post-image {
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: 95%;
   max-width: 500px;
   object-fit: cover;
+  display: block;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  background: linear-gradient(transparent, transparent) padding-box,
+  linear-gradient(to right, orange, #33ccff, #33cc33) border-box;
 }
 
 .post-likes {
@@ -101,14 +153,16 @@
   font-size: 14px;
   line-height: 18px;
   margin-top: 5px;
+  margin-left: 5px;
 }
 
 .post-date {
   color: #8a8a8a;
+  margin-left: 5px;
 }
 
-.post + .post {
-  margin-top: 20px;
+.post-likes {
+  margin-left: 5px;
 }
 
 .posts-user-header {
@@ -144,9 +198,13 @@
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
+  border-radius: 20px;
+  padding: 40px 32px;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  background-color: white;
   width: 100%;
+  max-width: 420px;
 }
 
 .form-title {
@@ -195,4 +253,21 @@
   box-sizing: border-box;
   width: 100%;
   text-align: center;
+}
+
+.upload-image {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .posts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .posts {
+    grid-template-columns: 1fr;
+  }
 }

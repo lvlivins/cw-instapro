@@ -17,8 +17,10 @@ export function renderLoadingPageComponent({ appEl, user, goToPage }) {
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
+                 <div class="page-content">
                 <div class="loading-page">
                   <div class="loader"><div></div><div></div><div></div></div>
+                </div>
                 </div>
               </div>`;
 

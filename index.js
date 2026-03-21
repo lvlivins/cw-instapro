@@ -1,6 +1,6 @@
-import { getPosts } from "./api.js";
-import { renderAddPostPageComponent } from "./components/add-post.js";
-import { renderAuthPageComponent } from "./components/auth.js";
+import {getPosts} from "./api.js";
+import {renderAddPostPageComponent} from "./components/add-post.js";
+import {renderAuthPageComponent} from "./components/auth.js";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -8,8 +8,8 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
-import { renderPostsPageComponent } from "./components/posts.js";
-import { renderLoadingPageComponent } from "./components/loading.js";
+import {renderPostsPageComponent} from "./components/posts.js";
+import {renderLoadingPageComponent} from "./components/loading.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
@@ -52,7 +52,7 @@ export const goToPage = (newPage, data) => {
       page = LOADING_PAGE;
       renderApp();
 
-      return getPosts({ token: getToken() })
+      return getPosts({token: getToken()})
         .then((newPosts) => {
           page = POSTS_PAGE;
           posts = newPosts;
@@ -107,9 +107,9 @@ const renderApp = () => {
   if (page === ADD_POSTS_PAGE) {
     return renderAddPostPageComponent({
       appEl,
-      onAddPostClick({ description, imageUrl }) {
+      onAddPostClick({description, imageUrl}) {
         // @TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
+        console.log("Добавляю пост...", {description, imageUrl});
         goToPage(POSTS_PAGE);
       },
     });

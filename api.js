@@ -81,7 +81,7 @@ export function addLike({ token, postId }) {
 
 // убираем лайк - не работает пока что .. чек
 export function removeLike({ token, postId }) {
-  return fetch(`${postsHost}/${postId}/dislike(`, {
+  return fetch(`${postsHost}/${postId}/dislike`, {
     method: "POST",
     headers: {
       Authorization: token,

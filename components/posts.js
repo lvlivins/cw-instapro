@@ -1,7 +1,7 @@
 import {USER_POSTS_PAGE, POSTS_PAGE} from "../routes.js";
 import {renderHeaderComponent} from "./header.js";
 import {user, posts, goToPage} from "../index.js";
-import { addLike, removeLike } from "../api.js";
+import {addLike, removeLike} from "../api.js";
 
 export function renderPostsPageComponent({appEl}) {
   /* DONE реализовать рендер постов из api*/
@@ -88,22 +88,24 @@ export function renderPostsPageComponent({appEl}) {
       const token = `Bearer ${user.token}`;
       const post = posts.find((p) => p.id === postId);
 
-      if (post.isLiked) {
-        removeLike({ token, postId });
-        post.isLiked = false;
-        post.likes.length--;
-      } else {
-        addLike({ token, postId });
-        post.isLiked = true;
-        post.likes.length++;
-      }
+      const request = post.isLiked
+        ? removeLike({token, postId})
+        : addLike({token, postId});
 
-      renderPostsPageComponent({ appEl });
+      request.then(() => {
+        if (post.isLiked) {
+          post.isLiked = false;
+          post.likes.length--;
+        } else {
+          post.isLiked = true;
+          post.likes.length++;
+        }
+
+        renderPostsPageComponent({appEl});
+      });
     });
   }
 }
-
-
 
 
 /*const appHtml = `

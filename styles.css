@@ -67,16 +67,11 @@ body {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
-.logout-button {
-  width: 130px;
-  text-align: right;
-}
-
 .posts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding: 0;
+  padding: 0 20vh;
   margin: 0;
   list-style: none;
   align-items: stretch;

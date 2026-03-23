@@ -69,10 +69,15 @@ export function renderAuthPageComponent({appEl, setUser}) {
       appEl.querySelector(".form-error").textContent = message;
     };
 
-    // Рендерим заголовок страницы
+    // рендер заголовок страницы
     renderHeaderComponent({
       element: document.querySelector(".header-container"),
     });
+    // убираем кнопку войти на странице auth
+    const headerButton = appEl.querySelector(".add-or-login-button");
+    if (headerButton) {
+      headerButton.style.display = "none";
+    }
 
     // Если режим регистрации, рендерим компонент загрузки изображения
     const uploadImageContainer = appEl.querySelector(".upload-image-container");

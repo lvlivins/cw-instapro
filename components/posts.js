@@ -1,4 +1,4 @@
-import {USER_POSTS_PAGE, POSTS_PAGE} from "../routes.js";
+import {USER_POSTS_PAGE} from "../routes.js";
 import {renderHeaderComponent} from "./header.js";
 import {user, posts, goToPage} from "../index.js";
 import {addLike, removeLike} from "../api.js";

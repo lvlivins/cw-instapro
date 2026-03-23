@@ -26,21 +26,13 @@ export function renderAuthPageComponent({appEl, setUser}) {
            <div class="page-content page-reg">
           <div class="form">
               <h3 class="form-title">
-                ${
-      isLoginMode
-        ? "Вход в&nbsp;Instapro"
-        : "Регистрация в&nbsp;Instapro"
-    }
+                ${isLoginMode ? "Вход в&nbsp;Instapro" : "Регистрация в&nbsp;Instapro"}
               </h3>
               <div class="form-inputs">
-                  ${
-      !isLoginMode
-        ? `
+                  ${!isLoginMode ? `
                       <div class="upload-image-container"></div>
                       <input type="text" id="name-input" class="input" placeholder="Имя" />
-                      `
-        : ""
-    }
+                      ` : ""}
                   <input type="text" id="login-input" class="input" placeholder="Логин" />
                   <input type="password" id="password-input" class="input" placeholder="Пароль" />
                   <div class="form-error"></div>

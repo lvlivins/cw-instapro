@@ -57,7 +57,7 @@ export function renderPostsPageComponent({appEl}) {
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
-                <ul class="posts">
+                <ul class="posts posts-main">
                   ${
     posts.length === 0
       ? `<p class="posts-empty">Постов пока нет</p>`

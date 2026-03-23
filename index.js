@@ -1,4 +1,4 @@
-import {getPosts} from "./api.js";
+import {getPosts, addPost} from "./api.js";
 import {renderAddPostPageComponent} from "./components/add-post.js";
 import {renderAuthPageComponent} from "./components/auth.js";
 import {
@@ -15,10 +15,13 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import {renderMyProfilePageComponent} from "./components/my-profile.js";
+
 
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export let profileUserId = null;
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -64,11 +67,12 @@ export const goToPage = (newPage, data) => {
         });
     }
 
+    /*DONE - реализовать получение постов юзера из API*/
     if (newPage === USER_POSTS_PAGE) {
-      // @@TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
+      profileUserId = data.userId
+    /*  profileUserId = data?.userId || user?.id || user?._id || null;*/
       page = USER_POSTS_PAGE;
-      posts = [];
       return renderApp();
     }
 
@@ -104,13 +108,18 @@ const renderApp = () => {
     });
   }
 
+  //DONE реализовать добавление поста в API
   if (page === ADD_POSTS_PAGE) {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({description, imageUrl}) {
-        // @TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", {description, imageUrl});
-        goToPage(POSTS_PAGE);
+        return addPost({
+          token: getToken(),
+          description,
+          imageUrl,
+        }).then(() => {
+          goToPage(POSTS_PAGE);
+        });
       },
     });
   }
@@ -121,11 +130,11 @@ const renderApp = () => {
     });
   }
 
+  /* DONE реализовать страницу с фотографиями отдельного пользователя*/
   if (page === USER_POSTS_PAGE) {
-    // @TODO: реализовать страницу с фотографиями отдельного пользователя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    return renderMyProfilePageComponent({
+      appEl,
+    });
   }
-};
-
+}
 goToPage(POSTS_PAGE);

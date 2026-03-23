@@ -79,7 +79,7 @@ export function addLike({ token, postId }) {
   });
 }
 
-// убираем лайк - не работает пока что .. чек
+// убираем лайк
 export function removeLike({ token, postId }) {
   return fetch(`${postsHost}/${postId}/dislike`, {
     method: "POST",
@@ -87,6 +87,29 @@ export function removeLike({ token, postId }) {
       Authorization: token,
     },
   }).then((response) => {
+    return response.json();
+  });
+}
+// добавить пост
+export function addPost({token, description, imageUrl}) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Неверные данные");
+    }
+
+    if (response.status === 401) {
+      throw new Error("Войдите или зарегистрируйтесь, чтобы добавить пост");
+    }
+
     return response.json();
   });
 }

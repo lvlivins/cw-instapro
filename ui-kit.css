@@ -99,7 +99,7 @@ p {
 }
 
 .input {
-  height: 36px;
+  /*height: 36px;*/
   box-sizing: border-box;
   padding: 15px;
   font-size: 14px;
@@ -108,6 +108,8 @@ p {
   border: none;
   border-radius: 5px;
   background-color: #e8e8e8;
+  resize: none;
+  cursor: pointer;
 }
 
 .input .-error {
@@ -116,6 +118,7 @@ p {
 
 .input:focus {
   background-color: #fff;
+  cursor: pointer;
 }
 
 .textarea {

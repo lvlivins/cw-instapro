@@ -81,26 +81,30 @@ export function renderPostsPageComponent({appEl}) {
     });
   }
 
-  // обработчик клика по лайку
+  // обработчик клика по лайку - общ пост
   for (let btn of document.querySelectorAll(".like-button")) {
     btn.addEventListener("click", () => {
+      if (!user) {
+        return;
+      }
+
       const postId = btn.dataset.postId;
       const token = `Bearer ${user.token}`;
       const post = posts.find((p) => p.id === postId);
 
-      const request = post.isLiked
-        ? removeLike({token, postId})
-        : addLike({token, postId});
-
-      request.then(() => {
-        if (post.isLiked) {
+      if (post.isLiked) {
+        removeLike({token, postId}).then(() => {
           post.isLiked = false;
           post.likes.length--;
-        } else {
-          post.isLiked = true;
-          post.likes.length++;
-        }
+          renderPostsPageComponent({appEl});
+        });
 
+        return;
+      }
+
+      addLike({token, postId}).then(() => {
+        post.isLiked = true;
+        post.likes.length++;
         renderPostsPageComponent({appEl});
       });
     });

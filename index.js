@@ -1,4 +1,4 @@
-import {getPosts, addPost} from "./api.js";
+import {addPost, getPosts} from "./api.js";
 import {renderAddPostPageComponent} from "./components/add-post.js";
 import {renderAuthPageComponent} from "./components/auth.js";
 import {
@@ -59,6 +59,7 @@ export const goToPage = (newPage, data) => {
         .then((newPosts) => {
           page = POSTS_PAGE;
           posts = newPosts;
+          profileUserId = null; // обнулить чтоб в хэдере исчез profileView
           renderApp();
         })
         .catch((error) => {
@@ -69,9 +70,7 @@ export const goToPage = (newPage, data) => {
 
     /*DONE - реализовать получение постов юзера из API*/
     if (newPage === USER_POSTS_PAGE) {
-      console.log("Открываю страницу пользователя: ", data.userId);
-      profileUserId = data.userId
-    /*  profileUserId = data?.userId || user?.id || user?._id || null;*/
+      profileUserId = data.userId;
       page = USER_POSTS_PAGE;
       return renderApp();
     }

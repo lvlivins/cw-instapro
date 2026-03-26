@@ -5,42 +5,26 @@ export function renderMyProfilePageComponent({appEl}) {
   // находим посты пользователя
   const userPosts = [];
 
-  /*const currentProfileId = profileUserId || user?.id || user?._id || null;*/
-
   for (let i = 0; i < posts.length; i++) {
-    const post = posts[i];
-
-    if (post.user.id === profileUserId) {
-      userPosts.push(post);
+    if (posts[i].user.id === profileUserId) {
+      userPosts.push(posts[i]);
     }
   }
-
-/*  for (let i = 0; i < posts.length; i++) {
-    const post = posts[i];
-
-    const postUserId = post.user.id || post.user._id;
-
-    if (postUserId === currentProfileId) {
-      userPosts.push(post);
-    }
-  }*/
 
   // формируем html постов
   let postsHtml = "";
 
   for (let i = 0; i < userPosts.length; i++) {
-    const post = userPosts[i];
-
     postsHtml += `
-      <li class="post">
-        <div class="post-image-container">
-          <img class="post-image" src="${post.imageUrl}">
-        </div>
-        <p class="post-text">
-          ${post.description}
-        </p>
-      </li>
-    `;
+    <li class="post">
+      <div class="post-image-container">
+        <img class="post-image" src="${userPosts[i].imageUrl}">
+      </div>
+      <p class="post-text">
+        ${userPosts[i].description}
+      </p>
+    </li>
+  `;
   }
 
   // формируем надпись, если нет постов
@@ -65,14 +49,14 @@ export function renderMyProfilePageComponent({appEl}) {
 
   // общий html страницы
   appEl.innerHTML = `
-    <div class="page-container">
-      <div class="header-container"></div>
+  <div class="page-container">
+    <div class="header-container"></div>
 
-      <div class="page-content">
-        ${contentHtml}
-      </div>
+    <div class="page-content">
+      ${contentHtml}
     </div>
-  `;
+  </div>
+`;
 
   // рендерим хэдер
   renderHeaderComponent({

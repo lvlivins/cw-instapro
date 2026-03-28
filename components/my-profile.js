@@ -31,12 +31,17 @@ export function renderMyProfilePageComponent({appEl}) {
       </div>
 
       <div class="post-likes">
+      <div class="post-likes__box">
         <button data-post-id="${userPosts[i].id}" class="like-button">
           <img src="./assets/images/${userPosts[i].isLiked ? "like-active.svg" : "like-not-active.svg"}">
         </button>
         <p class="post-likes-text">
           Нравится: <strong>${userPosts[i].likes.length}</strong>
         </p>
+        </div>
+        <div class="post-header__actions">
+          <button class="post-header__menu-button" type="button">&#8942</button>
+        </div>
       </div>
 
       <p class="post-text">

@@ -17,14 +17,23 @@ export function renderPostsPageComponent({appEl}) {
       year: "numeric",
     });
   };
-
+  /*<div class="post-header" data-user-id="${post.user.id}" data-user-name="${post.user.name}" data-user-image="${post.user.imageUrl}">
+   <img src="${post.user.imageUrl}" class="post-header__user-image">
+   <p class="post-header__user-name">${post.user.name}</p>
+   </div>*/
   const postsHtml = posts
     .map((post) => {
       return `
         <li class="post">
           <div class="post-header" data-user-id="${post.user.id}" data-user-name="${post.user.name}" data-user-image="${post.user.imageUrl}">
-              <img src="${post.user.imageUrl}" class="post-header__user-image">
-              <p class="post-header__user-name">${post.user.name}</p>
+            <div class="post-header__user-content">
+                <img src="${post.user.imageUrl}" class="post-header__user-image">
+                <p class="post-header__user-name">${post.user.name}</p>
+            </div>
+
+            <div class="post-header__actions">
+              <button class="post-header__menu-button" type="button">&#8942</button>
+            </div>
           </div>
 
           <div class="post-image-container">
@@ -32,6 +41,7 @@ export function renderPostsPageComponent({appEl}) {
           </div>
 
           <div class="post-likes">
+          <div class="post-likes__box">
             <button data-post-id="${post.id}" class="like-button">
               <img src="./assets/images/${post.isLiked ? "like-active.svg" : "like-not-active.svg"
       }">
@@ -39,6 +49,7 @@ export function renderPostsPageComponent({appEl}) {
             <p class="post-likes-text">
               Нравится: <strong>${post.likes.length}</strong>
             </p>
+            </div>
           </div>
 
           <p class="post-text">

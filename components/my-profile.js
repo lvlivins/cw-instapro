@@ -1,6 +1,7 @@
 import {renderHeaderComponent} from "./header.js";
 import {posts, profileUserId, user} from "../index.js";
-import {addLike, removeLike} from "../api.js";
+import {addLike, removeLike, deletePost} from "../api.js";
+import {openDeletePostModal, openAuthPostModal} from "./remove-modal.js";
 
 export function renderMyProfilePageComponent({appEl}) {
 
@@ -11,6 +12,15 @@ export function renderMyProfilePageComponent({appEl}) {
       year: "numeric",
     });
   };
+
+  const getMyUserId = () => {
+    if (!user) {
+      return "";
+    }
+
+    return user._id;
+  };
+
   // находим посты пользователя
   const userPosts = [];
 
@@ -20,7 +30,6 @@ export function renderMyProfilePageComponent({appEl}) {
     }
   }
 
-  // формируем html постов
   let postsHtml = "";
 
   for (let i = 0; i < userPosts.length; i++) {
@@ -40,7 +49,7 @@ export function renderMyProfilePageComponent({appEl}) {
         </p>
         </div>
         <div class="post-header__actions">
-          <button class="post-header__menu-button" type="button">&#8942</button>
+          <button data-post-id="${userPosts[i].id}" class="post-header__menu-button" type="button">&#8942</button>
         </div>
       </div>
 
@@ -69,11 +78,7 @@ export function renderMyProfilePageComponent({appEl}) {
       </div>
     `;
   } else {
-    contentHtml = `
-      <ul class="posts">
-        ${postsHtml}
-      </ul>
-    `;
+    contentHtml = `<ul class="posts">${postsHtml}</ul>`;
   }
 
   // общий html страницы
@@ -87,7 +92,7 @@ export function renderMyProfilePageComponent({appEl}) {
   </div>
 `;
 
-  // рендерим хэдер
+  // рендер хэдер
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
   });
@@ -117,6 +122,38 @@ export function renderMyProfilePageComponent({appEl}) {
         post.isLiked = true;
         post.likes.length++;
         renderMyProfilePageComponent({appEl});
+      });
+    });
+  }
+
+  for (let button of document.querySelectorAll(".post-header__menu-button")) {
+    button.addEventListener("click", () => {
+      const postId = button.dataset.postId;
+      const post = posts.find((post) => post.id === postId);
+
+      if (!user) {
+        openAuthPostModal();
+        return;
+      }
+
+      if (!post) {
+        return;
+      }
+
+      if (post.user.id !== getMyUserId()) {
+        return;
+      }
+
+      openDeletePostModal({
+          confirmClick: () => {
+            deletePost({
+              token: `Bearer ${user.token}`,
+              postId,
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+        cancelClick: () => {},
       });
     });
   }

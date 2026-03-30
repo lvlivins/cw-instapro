@@ -6,12 +6,8 @@ import {
   USER_POSTS_PAGE
 } from "../routes.js";
 
-/* Компонент заголовка страницы.
-Шапка страницы = лого, btn добавления постов, btn входа и выхода
-@param {HTMLElement} params.element - HTML-элемент, в который будет рендериться заголовок.
-@returns {HTMLElement} Возвращает элемент заголовка после рендеринга. */
 export function renderHeaderComponent({element}) {
-  /*Рендерит содержимое заголовка.*/
+  /*Рендер заголовка.*/
   let profileView = "";
   let currentUserView = "";
 
@@ -52,7 +48,7 @@ export function renderHeaderComponent({element}) {
     element.innerHTML = `
   <div class="page-header">
      <div class="header-box">
-      <h1 class="logo">instapro</h1>
+      <h1 class="logo logo_mobile">instapro</h1>
       <button class="header-button add-or-login-button">
       ${user ? `<div title="Добавить пост" class="add-post-sign"></div>` : "Войти"}
       </button>
@@ -66,9 +62,7 @@ export function renderHeaderComponent({element}) {
   `;
 
 
-    /* Обработчик клика по кнопке "Добавить пост"/"Войти".
-    Если пользователь авторизован, перенаправляет на страницу добавления постов.
-    Если пользователь не авторизован, перенаправляет на страницу авторизации.*/
+    /* Обработчик клика по кнопке "Войти"/ + пост */
     element
       .querySelector(".add-or-login-button")
       .addEventListener("click", () => {

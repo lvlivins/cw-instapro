@@ -113,3 +113,44 @@ export function addPost({token, description, imageUrl}) {
     return response.json();
   });
 }
+// удалить пост
+export function deletePost({token, postId}) {
+  return fetch(`${postsHost}/${postId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    return response.json().then((data) => {
+      if (!response.ok) {
+        throw new Error(data.error || "Не удалось удалить пост");
+      }
+
+      if (data.result !== "ok") {
+        throw new Error("Пост не был удален");
+      }
+
+      return data;
+    });
+  });
+}
+
+// router.beforeEach((to, from, next) => {
+//   const userInfo = localStorage.getItem('userInfo') // если в localStorage есть userInfo, роутер не выкинет на /login и пустит на главную
+//
+//   let user = null
+//
+//   if (userInfo) {
+//     try {
+//       user = JSON.parse(userInfo)
+//     } catch (error) {
+//       user = null
+//     }
+//   }
+//
+//   if (to.meta.requiresAuth && (!user || !user.token)) { // есть ли объект пользователя + токен
+//     next('/login')
+//     return
+//   }
+//   next()
+// })

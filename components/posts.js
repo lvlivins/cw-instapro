@@ -1,14 +1,11 @@
 import {USER_POSTS_PAGE} from "../routes.js";
 import {renderHeaderComponent} from "./header.js";
 import {user, posts, goToPage} from "../index.js";
-import {addLike, removeLike} from "../api.js";
+import {addLike, removeLike, deletePost} from "../api.js";
+import {openDeletePostModal, openAuthPostModal} from "./remove-modal.js";
 
 export function renderPostsPageComponent({appEl}) {
-  /* DONE реализовать рендер постов из api*/
-  /**
-   * @TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
+  /* чтобы отформатировать дату создания поста в виде "19 минут назад"  можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow*/
 // изм дату из апи
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("ru-RU", {
@@ -17,10 +14,15 @@ export function renderPostsPageComponent({appEl}) {
       year: "numeric",
     });
   };
-  /*<div class="post-header" data-user-id="${post.user.id}" data-user-name="${post.user.name}" data-user-image="${post.user.imageUrl}">
-   <img src="${post.user.imageUrl}" class="post-header__user-image">
-   <p class="post-header__user-name">${post.user.name}</p>
-   </div>*/
+
+  const getMyUserId = () => {
+    if (!user) {
+      return "";
+    }
+
+    return user._id;
+  };
+
   const postsHtml = posts
     .map((post) => {
       return `
@@ -32,7 +34,7 @@ export function renderPostsPageComponent({appEl}) {
             </div>
 
             <div class="post-header__actions">
-              <button class="post-header__menu-button" type="button">&#8942</button>
+              <button data-post-id="${post.id}" class="post-header__menu-button" type="button">&#8942</button>
             </div>
           </div>
 
@@ -88,6 +90,40 @@ export function renderPostsPageComponent({appEl}) {
     userEl.addEventListener("click", () => {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
+      });
+    });
+  }
+    // обработчик клика по кнопке удаления
+  for (let button of document.querySelectorAll(".post-header__menu-button")) {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      const postId = button.dataset.postId;
+      const post = posts.find((post) => post.id === postId);
+
+      if (!user) {
+        openAuthPostModal();
+        return;
+      }
+
+      if (!post) {
+        return;
+      }
+
+      if (post.user.id !== getMyUserId()) {
+        return;
+      }
+
+      openDeletePostModal({
+        confirmClick: () => {
+            deletePost({
+              token: `Bearer ${user.token}`,
+              postId,
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+        cancelClick: () => {},
       });
     });
   }

@@ -2,23 +2,11 @@ import {loginUser, registerUser} from "../api.js";
 import {renderHeaderComponent} from "./header.js";
 import {renderUploadImageComponent} from "./upload-image.js";
 
-/** Компонент страницы авторизации = вход и рег
- * @param {HTMLElement} params.appEl - Корневой элемент приложения, в который будет рендериться страница.
- * @param {Function} params.setUser - Функция, вызываемая при успешной авторизации или регистрации.
- *                                    Принимает объект пользователя в качестве аргумента.*/
 export function renderAuthPageComponent({appEl, setUser}) {
-  /**Флаг, указывающий текущий режим формы.
-   * Если `true`, форма находится в режиме входа. Если `false`, в режиме регистрации.
-   * @type {boolean}*/
-  let isLoginMode = true;
 
-  /* URL изображения, загруженного пользователем при регистрации.
-  Используется только в режиме регистрации.
-  @type {string}*/
+  let loginMode = true;
   let imageUrl = "";
 
-  /*Рендерит форму авторизации или регистрации.
-   В зависимости от значения `isLoginMode` отображает соответствующий интерфейс.*/
   const renderForm = () => {
     const appHtml = `
       <div class="page-container">
@@ -26,25 +14,20 @@ export function renderAuthPageComponent({appEl, setUser}) {
            <div class="page-content page-reg">
           <div class="form">
               <h3 class="form-title">
-                ${isLoginMode ? "Вход в&nbsp;Instapro" : "Регистрация в&nbsp;Instapro"}
+                ${loginMode ? "Вход в&nbsp;Instapro" : "Регистрация в&nbsp;Instapro"}
               </h3>
-              <div class="form-inputs">
-                  ${!isLoginMode ? `
-                      <div class="upload-image-container"></div>
-                      <input type="text" id="name-input" class="input" placeholder="Имя" />
-                      ` : ""}
+              <form class="form-inputs">
+                  ${!loginMode ? `<div class="upload-image-container"></div><input type="text" id="name-input" class="input" placeholder="Имя" />` : ""}
                   <input type="text" id="login-input" class="input" placeholder="Логин" />
                   <input type="password" id="password-input" class="input" placeholder="Пароль" />
                   <div class="form-error"></div>
-                  <button class="button" id="login-button">${
-      isLoginMode ? "Войти" : "Зарегистрироваться"
-    }</button>
-              </div>
+                  <button type="button" class="button" id="login-button">${loginMode ? "Войти" : "Зарегистрироваться"}</button>
+              </form>
               <div class="form-footer">
                 <p class="form-footer-title">
-                  ${isLoginMode ? "Нет аккаунта?" : "Уже есть аккаунт?"}
-                  <button class="link-button" id="toggle-button">
-                    ${isLoginMode ? "Зарегистрироваться." : "Войти."}
+                  ${loginMode ? "Нет аккаунта?" : "Уже есть аккаунт?"}
+                  <button type="button" class="link-button" id="toggle-button">
+                    ${loginMode ? "Зарегистрироваться." : "Войти."}
                   </button>
                 </p>
               </div>
@@ -55,8 +38,7 @@ export function renderAuthPageComponent({appEl, setUser}) {
 
     appEl.innerHTML = appHtml;
 
-    /* Устанавливает сообщение об ошибке в форме.
-    @param {string} message - Текст сообщения об ошибке.*/
+    /* Устанавливает сообщение об ошибке в форме.*/
     const setError = (message) => {
       appEl.querySelector(".form-error").textContent = message;
     };
@@ -71,7 +53,7 @@ export function renderAuthPageComponent({appEl, setUser}) {
       headerButton.style.display = "none";
     }
 
-    // Если режим регистрации, рендерим компонент загрузки изображения
+    // Если режим регистрации, рендер компонент загрузки изображения
     const uploadImageContainer = appEl.querySelector(".upload-image-container");
     if (uploadImageContainer) {
       renderUploadImageComponent({
@@ -86,7 +68,7 @@ export function renderAuthPageComponent({appEl, setUser}) {
     document.getElementById("login-button").addEventListener("click", () => {
       setError("");
 
-      if (isLoginMode) {
+      if (loginMode) {
         // Обработка входа
         const login = document.getElementById("login-input").value;
         const password = document.getElementById("password-input").value;
@@ -146,13 +128,12 @@ export function renderAuthPageComponent({appEl, setUser}) {
       }
     });
 
-    // Обработка переключения режима (вход ↔ регистрация)
+    // Обработка переключения режима (вход - регистрация)
     document.getElementById("toggle-button").addEventListener("click", () => {
-      isLoginMode = !isLoginMode;
+      loginMode = !loginMode;
       renderForm(); // Перерисовываем форму с новым режимом
     });
   };
 
-  // Инициализация формы
   renderForm();
 }

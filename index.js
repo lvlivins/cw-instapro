@@ -1,6 +1,6 @@
-import { getPosts } from "./api.js";
-import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
-import { renderAuthPageComponent } from "./components/auth-page-component.js";
+import {addPost, getPosts} from "./api.js";
+import {renderAddPostPageComponent} from "./components/add-post.js";
+import {renderAuthPageComponent} from "./components/auth.js";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -8,17 +8,20 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
-import { renderPostsPageComponent } from "./components/posts-page-component.js";
-import { renderLoadingPageComponent } from "./components/loading-page-component.js";
+import {renderPostsPageComponent} from "./components/posts.js";
+import {renderLoadingPageComponent} from "./components/loading.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import {renderMyProfilePageComponent} from "./components/my-profile.js";
+
 
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export let profileUserId = null;
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -31,9 +34,7 @@ export const logout = () => {
   goToPage(POSTS_PAGE);
 };
 
-/**
- * Включает страницу приложения
- */
+/* Включает страницу приложения */
 export const goToPage = (newPage, data) => {
   if (
     [
@@ -54,10 +55,11 @@ export const goToPage = (newPage, data) => {
       page = LOADING_PAGE;
       renderApp();
 
-      return getPosts({ token: getToken() })
+      return getPosts({token: getToken()})
         .then((newPosts) => {
           page = POSTS_PAGE;
           posts = newPosts;
+          profileUserId = null; // обнулить чтоб в хэдере исчез profileView
           renderApp();
         })
         .catch((error) => {
@@ -66,11 +68,10 @@ export const goToPage = (newPage, data) => {
         });
     }
 
+    /*DONE - реализовать получение постов юзера из API*/
     if (newPage === USER_POSTS_PAGE) {
-      // @@TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
+      profileUserId = data.userId;
       page = USER_POSTS_PAGE;
-      posts = [];
       return renderApp();
     }
 
@@ -106,13 +107,18 @@ const renderApp = () => {
     });
   }
 
+  //DONE реализовать добавление поста в API
   if (page === ADD_POSTS_PAGE) {
     return renderAddPostPageComponent({
       appEl,
-      onAddPostClick({ description, imageUrl }) {
-        // @TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+      onAddPostClick({description, imageUrl}) {
+        return addPost({
+          token: getToken(),
+          description,
+          imageUrl,
+        }).then(() => {
+          goToPage(POSTS_PAGE);
+        });
       },
     });
   }
@@ -123,11 +129,11 @@ const renderApp = () => {
     });
   }
 
+  /* DONE реализовать страницу с фотографиями отдельного пользователя*/
   if (page === USER_POSTS_PAGE) {
-    // @TODO: реализовать страницу с фотографиями отдельного пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    return renderMyProfilePageComponent({
+      appEl,
+    });
   }
-};
-
+}
 goToPage(POSTS_PAGE);
